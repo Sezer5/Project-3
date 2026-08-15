@@ -12,32 +12,54 @@
                             <i class="bi bi-plus"></i> Add
                         </button>
                     </a>
-                    <div class="col-md-4 mt-2">
-                        <table class="table table-responsive table-bordered text-center">
+                    <div class="col-md-12 mt-2">
+                        <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Slug</th>
-                                    <th>Name</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
+                                    <td>#</td>
+                                    <td>Thumbnail</td>
+                                    <td>Name</td>
+                                    <td>Slug</td>
+
+                                    <td>Colors</td>
+                                    <td>Sizes</td>
+                                    <td>Qty</td>
+                                    <td>Price</td>
+                                    <td>Images</td>
+
+                                    <td></td>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($products as $product)
+                                @foreach ($products as $key => $product)
                                     <tr>
-                                        <td>{{ $product->id }}</td>
-                                        <td>{{ $product->slug }}</td>
+                                        <td>{{ $key += 1 }}</td>
+                                        <td><img src="{{ asset($product->thumbnail) }}" width="30"></td>
                                         <td>{{ $product->name }}</td>
+                                        <td>{{ $product->slug }}</td>
+
+
                                         <td>
-                                            <a href="{{ route('admin.product.edit', $product->slug) }}"
-                                                class="btn btn-warning btn-sm">
-                                                <i class="bi bi-wrench"></i>
-                                            </a>
+                                            @foreach ($product->colors as $color)
+                                                <span class="badge bg-light text-dark">{{ $color->name }}</span>
+                                            @endforeach
                                         </td>
                                         <td>
+                                            @foreach ($product->sizes as $size)
+                                                <span class="badge bg-light text-dark">{{ $size->name }}</span>
+                                            @endforeach
+                                        </td>
+                                        <td>{{ $product->quantity }}</td>
+                                        <td>{{ $product->price }}</td>
+
+
+                                        <td>
+                                            <a href="{{ route('admin.product.edit', $product->slug) }}"
+                                                class="btn btn-sm btn-warning">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
                                             <a href="#" onclick="deleteItem({{ $product->id }})"
-                                                class="btn btn-danger btn-sm">
+                                                class="btn btn-sm btn-danger">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                             <form id="{{ $product->id }}"
@@ -47,7 +69,6 @@
                                                 @method('DELETE')
                                             </form>
                                         </td>
-
                                     </tr>
                                 @endforeach
                             </tbody>
