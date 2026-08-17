@@ -30,6 +30,8 @@
                 @click="
                   cartStore.incementItem({
                     ref: item.ref,
+                    product_id:item.product_id
+                    color:item.color
                   })
                 "
               ></i>
