@@ -15,7 +15,7 @@
     <div class="mb-3">
       <form @submit.prevent="handleSearch" class="input-group">
         <input
-          v-model="searchQuery"
+          v-model="searcTerm"
           type="text"
           class="form-control"
           placeholder="Search..."
@@ -25,6 +25,7 @@
           class="btn btn-outline-secondary d-flex align-items-center"
           type="submit"
           aria-label="Ara"
+          @click="productStore.getProductsByTerm(searcTerm)"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -51,13 +52,27 @@
           data-bs-target="#home-collapse"
           aria-expanded="true"
         >
-          Home
+          Colors
         </button>
         <div class="collapse show" id="home-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark rounded">Overview</a></li>
-            <li><a href="#" class="link-dark rounded">Updates</a></li>
-            <li><a href="#" class="link-dark rounded">Reports</a></li>
+            <li
+              class="d-flex justify-content-between align-items-center"
+              v-for="color in productStore.colors"
+              :key="color.id"
+              @click="productStore.getProductsByColor(color.slug)"
+            >
+              <a href="#" class="link-dark rounded">{{ color.name }}</a>
+              <div
+                :style="{
+                  backgroundColor: color.name,
+                  width: '20px',
+                  height: '20px',
+                  borderRadius: '20px',
+                  cursor: 'pointer',
+                }"
+              ></div>
+            </li>
           </ul>
         </div>
       </li>
@@ -68,51 +83,17 @@
           data-bs-target="#dashboard-collapse"
           aria-expanded="false"
         >
-          Dashboard
+          Sizes
         </button>
         <div class="collapse" id="dashboard-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark rounded">Overview</a></li>
-            <li><a href="#" class="link-dark rounded">Weekly</a></li>
-            <li><a href="#" class="link-dark rounded">Monthly</a></li>
-            <li><a href="#" class="link-dark rounded">Annually</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="mb-1">
-        <button
-          class="btn btn-toggle align-items-center rounded collapsed"
-          data-bs-toggle="collapse"
-          data-bs-target="#orders-collapse"
-          aria-expanded="false"
-        >
-          Orders
-        </button>
-        <div class="collapse" id="orders-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark rounded">New</a></li>
-            <li><a href="#" class="link-dark rounded">Processed</a></li>
-            <li><a href="#" class="link-dark rounded">Shipped</a></li>
-            <li><a href="#" class="link-dark rounded">Returned</a></li>
-          </ul>
-        </div>
-      </li>
-
-      <li class="mb-1">
-        <button
-          class="btn btn-toggle align-items-center rounded collapsed"
-          data-bs-toggle="collapse"
-          data-bs-target="#account-collapse"
-          aria-expanded="false"
-        >
-          Account
-        </button>
-        <div class="collapse" id="account-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark rounded">New...</a></li>
-            <li><a href="#" class="link-dark rounded">Profile</a></li>
-            <li><a href="#" class="link-dark rounded">Settings</a></li>
-            <li><a href="#" class="link-dark rounded">Sign out</a></li>
+            <li
+              v-for="size in productStore.sizes"
+              :key="size.id"
+              @click="productStore.getProductsBySize(size.slug)"
+            >
+              <a href="#" class="link-dark rounded">{{ size.name }}</a>
+            </li>
           </ul>
         </div>
       </li>
@@ -121,16 +102,12 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { useProductStore } from "@/stores/useProductStore";
+import { reactive } from "vue";
 
-const searchQuery = ref("");
+const searcTerm = reactive();
 
-const handleSearch = () => {
-  if (searchQuery.value.trim()) {
-    console.log("Aranan kelime:", searchQuery.value);
-    // Arama mantığı buraya eklenebilir
-  }
-};
+const productStore = useProductStore();
 </script>
 
 <style scoped>

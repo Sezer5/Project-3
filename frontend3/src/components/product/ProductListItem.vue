@@ -26,13 +26,28 @@
         </h5>
 
         <!-- Yıldız / Değerlendirme Puanı -->
-        <div class="mb-2 text-warning small">
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-half"></i>
-          <span class="text-muted ms-1">(4.5)</span>
+        <div class="mb-2 d-flex align-items-center justify-content-between">
+          <div class="d-flex">
+            <div
+              v-for="color in product.colors"
+              :key="color.id"
+              :style="{
+                backgroundColor: color.name,
+                width: '10px',
+                height: '10px',
+                borderRadius: '10px',
+                margin: '0px 10px 0px 0px',
+              }"
+            ></div>
+          </div>
+          <div>
+            <span
+              class="badge bg-light text-black border me-1"
+              v-for="size in product.sizes"
+              :key="size.id"
+              >{{ size.name }}</span
+            >
+          </div>
         </div>
 
         <!-- Kısa Açıklama -->
@@ -44,24 +59,22 @@
         <div class="pt-3 border-top mt-auto">
           <div class="d-flex align-items-center justify-content-between mb-3">
             <!-- Fiyat -->
-            <div>
-              <span class="text-decoration-line-through text-muted me-2 small"
-                >{{ product.price * 1.2 }} ₺</span
-              >
-              <span class="fw-bold text-primary fs-5"
-                >{{ product.price }} ₺</span
-              >
-            </div>
+
+            <span class="text-decoration-line-through text-muted me-2 small"
+              >{{ product.price * 1.2 }} ₺</span
+            >
+            <span class="fw-bold text-primary fs-5">{{ product.price }} ₺</span>
           </div>
 
           <!-- Eylem Butonları -->
           <div class="d-grid gap-2">
-            <button
+            <router-link
               type="button"
               class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+              :to="`/productDetail/` + product.slug"
             >
               <i class="bi bi-eye"></i> Product Details
-            </button>
+            </router-link>
           </div>
         </div>
       </div>
@@ -71,6 +84,7 @@
 
 <script setup>
 import { BASE_URL } from "@/helpers/config";
+import router from "@/router";
 
 const props = defineProps({
   product: {

@@ -39,7 +39,14 @@
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link px-3" href="#">Projeler</a>
+            <router-link
+              class="nav-link active px-3"
+              aria-current="page"
+              to="/cart"
+              ><i class="bi bi-cart"></i> Cart ({{
+                cartStore.cart?.length
+              }})</router-link
+            >
           </li>
           <li class="nav-item">
             <a class="nav-link px-3" href="#">Blog</a>
@@ -104,6 +111,9 @@
 </template>
 
 <script setup>
+import { useCartStore } from "@/stores/useCartStore";
+
+const cartStore = useCartStore();
 </script>
 
 <style scoped>
