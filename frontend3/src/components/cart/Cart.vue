@@ -27,22 +27,24 @@
             <td>
               <i
                 class="bi bi-caret-up"
-                @click="
-                  cartStore.incementItem({
-                    ref: item.ref,
-                    product_id:item.product_id
-                    color:item.color
-                  })
-                "
+                @click="cartStore.incementItem(item)"
               ></i>
               {{ item.qty }}
-              <i class="bi bi-caret-down"></i>
+              <i
+                class="bi bi-caret-down"
+                @click="cartStore.decrementItem(item)"
+              ></i>
             </td>
             <td>$ {{ item.price }}</td>
             <td>$ {{ item.price * item.qty }}</td>
           </tr>
         </tbody>
       </table>
+      <div
+        class="border border-dark border-3 fw-bold p-2 rounded d-flex justify-content-center align-items-center"
+      >
+        Total: ${{ total }}
+      </div>
     </div>
     <div v-else>
       <div class="alert alert-info text-center">
@@ -55,8 +57,15 @@
 <script setup>
 import { useCartStore } from "@/stores/useCartStore";
 import { BASE_URL } from "@/helpers/config";
+import { computed } from "vue";
 
 const cartStore = useCartStore();
+
+// calculate the cart total
+
+const total = computed(() =>
+  cartStore.cart.reduce((acc, item) => (acc += item.price * item.qty), 0)
+);
 </script>
 
 <style scoped>

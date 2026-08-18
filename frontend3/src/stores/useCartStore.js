@@ -46,14 +46,14 @@ export const useCartStore = defineStore('cart', {
     },
 
     decrementItem(item){
-        let index = this.cartItems.findIndex(product => product.product_id === item.product_id 
+        let index = this.cart.findIndex(product => product.product_id === item.product_id 
                                           && product.color=== item.color 
                                           && product.size===item.size)
       // If same product already exists in the cart
       if(index!==-1){
         this.cart[index].qty-=1
         if(this.cart[index].qty === 0){
-          this.cart = this.cart.filter(product=>product.ref !== item.ref)
+          this.cart = this.cart.filter(product=>{product.ref !== item.ref})
             }
         }
 
